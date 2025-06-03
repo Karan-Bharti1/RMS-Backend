@@ -1,8 +1,15 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
-  name: {
-    type:String
+  username: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  password: {
+    type: String,
+    required: true
   },
   email: String,
   role: {
@@ -17,8 +24,10 @@ const userSchema = new mongoose.Schema({
   maxCapacity: Number,
   department: String
 });
-userSchema.methods.comparePassword= async function(password){
-   return bcrypt.compare(password,this.password) 
-}
+
+userSchema.methods.comparePassword = async function (password) {
+  return bcrypt.compare(password, this.password);
+};
+
 const RmsUser = mongoose.model('RmsUser', userSchema);
-module .exports=RmsUser
+module.exports = RmsUser;
