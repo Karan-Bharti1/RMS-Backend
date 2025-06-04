@@ -25,7 +25,7 @@ const corsOptions = {
   credentials: true,
   optionsSuccessStatus: 200,
 };
-
+const JWT_SECRET="mysecret"
 
 app.use(cors(corsOptions));
 app.use("/auth",authRoutes);
