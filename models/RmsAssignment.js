@@ -31,4 +31,4 @@ const AllocationSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Allocation', AllocationSchema);
+module.exports = mongoose.model('RmsAssignment', AllocationSchema);

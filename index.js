@@ -7,16 +7,35 @@ const dotenv=require("dotenv")
 const authRoutes=require("./routes/auth")
 const RmsUser = require("./models/RmsUser")
 const RmsProject = require("./models/RmsProject")
+const RmsAssignment = require("./models/RmsAssignment")
 
 app.use(express.json())
-app.use(cors({
-  origin: ["http://localhost:5173","*"],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-}));
+
 dotenv.config()
 mongoose.connect(process.env.MONGODB).then(()=>console.log("Database connected successfully")).catch(error=>console.error(error))
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, etc.)
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = [
+      'http://localhost:5173',
+      
+    ];
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 200 // For legacy browser support
+};
 
+app.use(cors(corsOptions));
 app.use("/auth",authRoutes);
 const PORT=process.env.PORT||5000
 
@@ -38,6 +57,22 @@ app.post("/projects",async(req,res)=>{
         res.status(500).json({message:"Failed to post project data"})
     }
 })
+app.post("/assignments",async(req,res)=>{
+    try {
+        const data=req.body
+            if (!data) {
+      return res.status(400).json({ message: "No data provided" });
+    }
+
+    const newAssignment = new RmsAssignment(data);
+    const savedProject = await newAssignment.save();
+
+    res.status(200).json({ message: "Assignment created successfully", project: savedProject });
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({message:"Failed to post Assignment data"})
+    }
+})
 app.get("/projects/:managerId",async(req,res)=>{
     try {
         const data=await RmsProject.find({managerId:req.params.managerId}).populate("managerId");
@@ -51,6 +86,69 @@ res.status(200).json(data)
          res.status(500).json({message:"Failed to get project data"})
     }
 })
+app.get("/assignments",async(req,res)=>{
+    try {
+        const data=await RmsAssignment.find().populate('engineerId')
+        if(data ){
+res.status(200).json(data)
+        }else{
+            res.status(404).json({message:"Data not found"})
+        }
+    } catch (error) {
+        console.log(error)
+         res.status(500).json({message:"Failed to get Assignments data"})
+    }
+})
+app.post("/update/:id", async (req, res) => {
+  try {
+    const updatedProject = await RmsProject.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    if (!updatedProject) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    res.status(200).json({ message: "Project updated successfully", project: updatedProject });
+  } catch (error) {
+    console.error("Error updating project:", error);
+    res.status(500).json({ message: "Failed to update project" });
+  }
+});
+app.get("/engineers", async (req, res) => {
+  try {
+    const engineers = await RmsUser.find({ role: "engineer" });
+
+    if (engineers.length > 0) {
+      res.status(200).json(engineers);
+    } else {
+      res.status(404).json({ message: "No engineers found" });
+    }
+  } catch (error) {
+    console.error("Error fetching engineers:", error);
+    res.status(500).json({ message: "Failed to fetch engineers" });
+  }
+});
+app.put("/assignments/update/:id", async (req, res) => {
+  try {
+    const updatedProject = await RmsAssignment.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    if (!updatedProject) {
+      return res.status(404).json({ message: "Assignment not found" });
+    }
+
+    res.status(200).json({ message: "Assignment  updated successfully", Assignment : updatedProject });
+  } catch (error) {
+    console.error("Error updating project:", error);
+    res.status(500).json({ message: "Failed to update Assignment " });
+  }
+});
 app.listen(PORT,()=>{
     console.log("App is running on the PORT: "+PORT)
 })
