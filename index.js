@@ -14,26 +14,18 @@ app.use(express.json())
 dotenv.config()
 mongoose.connect(process.env.MONGODB).then(()=>console.log("Database connected successfully")).catch(error=>console.error(error))
 const corsOptions = {
-  origin: function (origin, callback) {
-    // Allow requests with no origin (mobile apps, etc.)
-    if (!origin) return callback(null, true);
-    
-    const allowedOrigins = [
-      'http://localhost:5173',
-      
-    ];
-    
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: [
+    'http://localhost:5173', // Vite frontend
+    'http://localhost:3000', // Optional: in case you're also using Create React App
+    // Add production domain when deploying:
+    // 'https://your-production-domain.com'
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
-  optionsSuccessStatus: 200 // For legacy browser support
+  optionsSuccessStatus: 200,
 };
+
 
 app.use(cors(corsOptions));
 app.use("/auth",authRoutes);
@@ -181,7 +173,7 @@ app.post("/user/:userId", async (req, res) => {
 });
 app.get("/engineer/:userId",async(req,res)=>{
 try {
-    const assignments=await RmsAssignment.find({engineerId:req.params.userId})
+    const assignments=await RmsAssignment.find({engineerId:req.params.userId}).populate(engineerId)
  res.status(200).json(assignments)
 } catch (error) {
       res.status(500).json({ message: "Failed toget Assignments data" });
