@@ -149,6 +149,17 @@ app.put("/assignments/update/:id", async (req, res) => {
     res.status(500).json({ message: "Failed to update Assignment " });
   }
 });
+app.get("/user/:userId",async(req,res)=>{
+    try {
+        const userData=await RmsUser.find({_id:userId})
+        if(!userData){
+            res.status(404).json({message:"Not Found"})
+        }
+        res.status(200).json(userData)
+    } catch (error) {
+        res.status(500).json({ message: "Failed to user Details " });
+    }
+})
 app.listen(PORT,()=>{
     console.log("App is running on the PORT: "+PORT)
 })
