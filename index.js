@@ -151,14 +151,41 @@ app.put("/assignments/update/:id", async (req, res) => {
 });
 app.get("/user/:userId",async(req,res)=>{
     try {
-        const userData=await RmsUser.find({_id:userId})
+        const userData=await RmsUser.findOne({_id:req.params.userId})
         if(!userData){
             res.status(404).json({message:"Not Found"})
         }
         res.status(200).json(userData)
     } catch (error) {
-        res.status(500).json({ message: "Failed to user Details " });
+        console.log(error)
+        res.status(500).json({ message: "Failed to fetch user Details " });
     }
+})
+app.post("/user/:userId", async (req, res) => {
+    try {
+        const userData = await RmsUser.findOneAndUpdate(
+            { _id: req.params.userId },
+            req.body,
+            { new: true } 
+        );
+
+        if (!userData) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json(userData);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Failed to update details" });
+    }
+});
+app.get("/engineer/:userId",async(req,res)=>{
+try {
+    const assignments=await RmsAssignment.find({engineerId:req.params.userId})
+ res.status(200).json(assignments)
+} catch (error) {
+      res.status(500).json({ message: "Failed toget Assignments data" });
+}
 })
 app.listen(PORT,()=>{
     console.log("App is running on the PORT: "+PORT)
