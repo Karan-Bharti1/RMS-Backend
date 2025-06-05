@@ -16,7 +16,8 @@ mongoose.connect(process.env.MONGODB).then(()=>console.log("Database connected s
 const corsOptions = {
   origin: [
     'http://localhost:5173', 
-    'http://localhost:3000', // Optional: in case you're also using Create React App
+    'http://localhost:3000',
+   ' https://rms-frontend-umzk.vercel.app' // Optional: in case you're also using Create React App
     // Add production domain when deploying:
     // 'https://your-production-domain.com'
   ],
