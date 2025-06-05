@@ -138,8 +138,7 @@ This project was developed with the help of **AI tools** to accelerate learning 
 AI assistance was used **as a productivity tool**, but all logic was **understood and integrated manually** by the developer to meet the learning goals and technical requirements of the project.
 
 Currently using update clone version of same backend due to deployment issues
-
-https://rms-backend-v2-gnoq.vercel.app/engineer/68408244d26e54aa0928ddb4
+https://github.com/Karan-Bharti1/RMS-Backend-V2
 
 ## Contributing
 
