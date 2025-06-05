@@ -15,7 +15,7 @@ dotenv.config()
 mongoose.connect(process.env.MONGODB).then(()=>console.log("Database connected successfully")).catch(error=>console.error(error))
 const corsOptions = {
   origin: [
-    'http://localhost:5173', // Vite frontend
+    'http://localhost:5173', 
     'http://localhost:3000', // Optional: in case you're also using Create React App
     // Add production domain when deploying:
     // 'https://your-production-domain.com'
@@ -25,7 +25,7 @@ const corsOptions = {
   credentials: true,
   optionsSuccessStatus: 200,
 };
-const JWT_SECRET="mysecret"
+
 
 app.use(cors(corsOptions));
 app.use("/auth",authRoutes);

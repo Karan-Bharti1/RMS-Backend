@@ -3,13 +3,15 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const RmsUser = require("../models/RmsUser");
-const JWT_SECRET="mysecret"
+
 const router = express.Router();
 dotenv.config();
-// const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Register Route
 router.post("/register", async (req, res) => {
+
+  
   const { username, password, role } = req.body;
   try {
     const existingUser = await RmsUser.findOne({ username });
