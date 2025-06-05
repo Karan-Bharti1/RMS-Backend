@@ -2,6 +2,18 @@
 
 This is the backend for the **Resource Management System (RMS)** — a Node.js and Express-based API that handles user authentication, project assignments, and resource allocations. The backend connects to MongoDB and provides RESTful endpoints.
 
+## Author
+
+- [@Karan-Bharti1](https://github.com/Karan-Bharti1)
+
+
+
+
+
+## 🚀 About Me
+Hi there! 👋.
+I am currently learning Full Stack Web Development with a focus on the MERN stack (MongoDB, Express.js, React, and Node.js). I'm passionate about building dynamic, user-friendly web applications and continuously improving my skills.
+
 ## Features
 
 - User Authentication (Login/Registration)
@@ -72,19 +84,60 @@ npm start
 The server should start at `http://localhost:5000`.
 
 ## API Endpoints
+## 📡 API Endpoints
 
-| Method | Endpoint         | Description            |
-|--------|------------------|------------------------|
-| POST   | /auth/login      | User login             |
-| POST   | /auth/register   | User registration      |
-| GET    | /projects        | Get all projects       |
-| POST   | /assignments     | Create an assignment   |
-| ...    | (extendable)     | Add more as needed     |
+### Auth Routes
+
+| Method | Endpoint        | Description       |
+|--------|-----------------|-------------------|
+| POST   | `/auth/login`   | User login        |
+| POST   | `/auth/register`| User registration |
+
+### Project Routes
+
+| Method | Endpoint              | Description                     |
+|--------|-----------------------|---------------------------------|
+| POST   | `/projects`           | Create a new project            |
+| GET    | `/projects/:managerId`| Get projects by manager ID      |
+| POST   | `/update/:id`         | Update a project by ID          |
+
+### Assignment Routes
+
+| Method | Endpoint                    | Description                          |
+|--------|-----------------------------|--------------------------------------|
+| GET    | `/assignments`              | Get all assignments                  |
+| POST   | `/assignments`              | Create a new assignment              |
+| PUT    | `/assignments/update/:id`   | Update an assignment by ID           |
+| GET    | `/engineer/:userId`         | Get assignments for a specific engineer |
+
+### User Routes
+
+| Method | Endpoint           | Description         |
+|--------|--------------------|---------------------|
+| GET    | `/user/:userId`    | Get user details    |
+| POST   | `/user/:userId`    | Update user details |
+| GET    | `/engineers`       | Get all engineers   |
+
+### Miscellaneous
+
+| Method | Endpoint | Description        |
+|--------|----------|--------------------|
+| GET    | `/`      | Health check route |
+
+### 🧠 AI Assistance
+
+This project was developed with the help of **AI tools** to accelerate learning and productivity. Specifically:
+
+- **ChatGPT by OpenAI** was used for:
+  - Generating boilerplate code for Express/MongoDB routes
+  - Designing REST API structures
+  - Debugging errors and optimizing logic
+  - Writing Markdown documentation (like this `README.md`)
+  - Getting quick references during full stack development
+
+AI assistance was used **as a productivity tool**, but all logic was **understood and integrated manually** by the developer to meet the learning goals and technical requirements of the project.
 
 ## Contributing
 
 Feel free to fork this project and submit a pull request.
 
-## License
-
-MIT License
